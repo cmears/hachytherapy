@@ -128,3 +128,6 @@ tissueToChar Urethra = "U"
 tissueToChar Rectum = "R"
 tissueToChar PTV = "T"
 tissueToChar Outside = "O"
+
+pointsToPath :: [Point V2 Double] -> Path V2 Double
+pointsToPath = pathFromLocTrail . mapLoc (wrapTrail.closeLine) . fromVertices
