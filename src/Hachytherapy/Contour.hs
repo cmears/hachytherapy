@@ -5,6 +5,7 @@ module Hachytherapy.Contour where
 import Control.Monad.Catch
 import Control.Lens
 import Control.Monad
+import Data.List
 import qualified Data.Map as M
 import Data.Typeable
 import Diagrams.Prelude as D
@@ -51,7 +52,11 @@ addROI t roi cd = M.insert t roi cd
 
 contourDataFromList :: [ContourROI] -> ContourData
 contourDataFromList rois =
-  M.fromList [ (t, roi) | roi <- rois, let t = roiTissue roi ]
+  -- Make sure there is only one of each tissue type.
+  let tissues = map roiTissue rois
+  in if nub tissues == tissues
+     then M.fromList [ (t, roi) | roi <- rois, let t = roiTissue roi ]
+     else error "Multiple structures with same tissue type"
 
 contourDataToList :: ContourData -> [ContourROI]
 contourDataToList cd =
