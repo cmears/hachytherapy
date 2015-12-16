@@ -4,6 +4,7 @@
 module Hachytherapy.Dicom
   ( readContourData
   , readDicomDoseMap
+  , readStructureTypes
   )
   where
 
@@ -44,6 +45,20 @@ readDicomDoseMap dosepath = do
       doses = map ((*doseGridScaling).fromIntegral) dosePixelData
   return (M.fromList (zip coordinates doses), (makeOrdinate xSpacing, makeOrdinate ySpacing))
 
+
+readStructureTypes :: FilePath -> IO [String]
+readStructureTypes path = do
+  Just els <- getElementsFromFile path
+  return (getStructures els)
+
+-- Get a list of all the structure labels.
+getStructures :: [Element] -> [String]
+getStructures = do
+  tissueTypes <-
+    descend1 (0x3006,0x0020) $ do
+      descendMany (0xfffe,0xe000) $ do
+        asUnknownString <$> get1 (0x3006,0x0026)
+  return tissueTypes
 
 ensureOne :: [a] -> a
 ensureOne [x] = x
