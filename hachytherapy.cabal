@@ -19,6 +19,7 @@ library
 --                       Hachytherapy.Dose
 --                       Hachytherapy.Patient
                        Hachytherapy.Dicom
+                       Hachytherapy.ReadBex
                        Hachytherapy.Region
                        Hachytherapy.TCP
                        Hachytherapy.Types
@@ -33,6 +34,7 @@ library
                      , lens
                      , mtl >= 2.2.1
                      , regex-compat
+                     , safe >= 0.3.9
                      , split >= 0.2.2
                      , vector >= 0.10.12.3
   ghc-options:         -Wall
