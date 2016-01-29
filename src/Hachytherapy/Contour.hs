@@ -56,7 +56,7 @@ contourDataFromList rois =
   let tissues = map roiTissue rois
   in if nub tissues == tissues
      then M.fromList [ (t, roi) | roi <- rois, let t = roiTissue roi ]
-     else error "Multiple structures with same tissue type"
+     else error $ "Multiple structures with same tissue type: " ++ show tissues
 
 contourDataToList :: ContourData -> [ContourROI]
 contourDataToList cd =

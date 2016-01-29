@@ -1,9 +1,10 @@
-module Hachytheray.ReadBex (
+module Hachytherapy.ReadBex (
     readBexFile
 ) where
 
 import Control.Monad.State
 import Data.List.Split
+import qualified Data.Map as M
 import Safe
 
 import Hachytherapy.Coordinate
@@ -22,10 +23,10 @@ assertEqual msg eq x y =
     True -> return ()
     False -> error $ "assertEqual failed (" ++ msg ++ "): " ++ show x ++ " != " ++ show y
 
-readBexFile :: FilePath -> IO [(Coordinate, Dose)]
+readBexFile :: FilePath -> IO (DoseMap, (Ordinate, Ordinate))
 readBexFile filepath = do
   blob <- lines <$> readFile filepath
-  allVals <- flip evalStateT blob $ do
+  (allVals, gridSpacing) <- flip evalStateT blob $ do
     numSlices <- getInt "<Number of dose-grid slices>"
     upperLeft <- getDouble2 "<Upper-left X,Y of dose grid (mm)>"
     lowerRight <- getDouble2 "<Lower-right X,Y of dose grid (mm)>"
@@ -47,8 +48,8 @@ readBexFile filepath = do
       let coords = [ makeCoordinate (x,y,z) | (x,y) <- sliceCoords ]
       assertEqual "number of coords in slice" (==) (length vals) (length coords)
       return $ zip coords (vals :: [Double])
-    return $ concat sliceVals
-  return $ filter (\(_c,d) -> d /= 0.0) allVals
+    return (concat sliceVals, gridSpacing)
+  return (M.fromList allVals, (makeOrdinate gridSpacing, makeOrdinate gridSpacing))
 
 type Blob a = StateT [String] IO a
 

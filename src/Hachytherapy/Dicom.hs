@@ -93,6 +93,7 @@ getContours = do
            "[Prostate ultrasound]" -> Just Prostate
            "[Prostate ulrasound]" -> Just Prostate
            "[Prostate ultrsound]" -> Just Prostate
+           "[gtv1nosv]" -> Just Prostate
            "[Post-lat prostate]" -> Nothing -- what is this??
            "[Urethra]" -> Just Urethra
            "[urethra]" -> Just Urethra
@@ -101,6 +102,16 @@ getContours = do
            "[u/s urethra]" -> Just Urethra
            "[PTV]" -> Just PTV
            "[ptv]" -> Just PTV
+           "[Prostate PTV]" -> Just PTV
+           "[PROSTATE PTV]" -> Just PTV
+           "[BEN Prostate PTV]" -> Just PTV
+           "[Ben-Prostate PTV]" -> Just PTV
+           "[Prostate PTVben]" -> Just PTV
+           "[Prostate PTV JM]" -> Just PTV
+           "[JM PTV]" -> Just PTV
+           "[Not JM PTV]" -> Just PTV
+           "[Non_JM PTV]" -> Just PTV
+           "[JMPTV]" -> Just PTV
            "[rectum]" -> Just Rectum
            "[Rectum]" -> Just Rectum
            "[Rectum ct]" -> Just Rectum
@@ -122,6 +133,9 @@ getContours = do
            "[Penile bulb]" -> Nothing
            "[penile bulb]" -> Nothing
            "[Penile bulb ct]" -> Nothing
+           "[BULB]" -> Nothing
+           "[L CRUS]" -> Nothing
+           "[R CRUS]" -> Nothing
            "[Calcification]" -> Nothing
            "[Calcifiacation]" -> Nothing
            "[calcification]" -> Nothing
@@ -133,6 +147,7 @@ getContours = do
            "[hoonsu]" -> Nothing -- what is this??
            "[Bladder]" -> Nothing
            "[Bladder ct]" -> Nothing
+           "[NVB]" -> Nothing
            _ -> error $ "getContours: unknown tissue type: " ++ s
   colourPathPairs <-
     descend1 (0x3006, 0x0039) $ do
