@@ -37,4 +37,4 @@ library
                      , safe >= 0.3.9
                      , split >= 0.2.2
                      , vector >= 0.10.12.3
-  ghc-options:         -Wall
+  ghc-options:         -Wall -O2

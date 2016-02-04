@@ -17,6 +17,9 @@ assert msg False = error $ "assertion failed: " ++ msg
 nearlyEq :: (Fractional a, Ord a) => a -> a -> Bool
 nearlyEq x y = abs (x-y) < 0.00001
 
+roughlyEq :: (Fractional a, Ord a) => a -> a -> Bool
+roughlyEq x y = abs (x-y) < 0.2
+
 assertEqual :: (Monad m, Show a, Show a1) => [Char] -> (a -> a1 -> Bool) -> a -> a1 -> m ()
 assertEqual msg eq x y =
   case eq x y of
@@ -35,8 +38,8 @@ readBexFile filepath = do
 
     let xCoords = take nx [ fst upperLeft, fst upperLeft + gridSpacing .. ]
     let yCoords = take ny [ snd upperLeft, snd upperLeft + gridSpacing .. ]
-    assertEqual "checking xCoords" nearlyEq (last xCoords) (fst lowerRight)
-    assertEqual "checking yCoords" nearlyEq (last yCoords) (snd lowerRight)
+    assertEqual "checking xCoords" roughlyEq (last xCoords) (fst lowerRight)
+    assertEqual "checking yCoords" roughlyEq (last yCoords) (snd lowerRight)
 
     let sliceCoords = [ (x,y) | x <- xCoords, y <- yCoords ]
 
